@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('telefono');
             $table->text('direccion')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -19,6 +19,10 @@ class CompraResource extends Resource
     protected static ?string $model = Compra::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    
+    protected static ?string $modelLabel = "compras de la empresa";
+
+    protected static ?string $navigationGroup = 'Pagina de enlaces ';
 
     public static function form(Form $form): Form
     {
@@ -54,14 +58,18 @@ class CompraResource extends Resource
                 //
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(), // Filtro para ventas eliminadas
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\RestoreAction::make(),  // Acción para restaurar registros eliminados
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\RestoreBulkAction::make(), // Restaurar en masa
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(), // Eliminar permanentemente
                 ]),
             ]);
     }

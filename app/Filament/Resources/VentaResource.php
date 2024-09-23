@@ -14,31 +14,50 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 
+
 class VentaResource extends Resource
 {
     protected static ?string $model = Venta::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $modelLabel = "ventas de la empresa";
+
+    protected static ?string $navigationGroup = 'Pagina de enlaces ';
+
+
     public static function form(Form $form): Form
-    {
-        return $form
+{
+    return $form
         ->schema([
             Forms\Components\Select::make('cliente_id')
                 ->relationship('Cliente', 'nombre')
                 ->required(),
             Forms\Components\Select::make('producto_id')
                 ->relationship('Producto', 'nombre')
-                ->required(),
+                ->required()
+                ->reactive()  // Para actualizar dinámicamente al cambiar de producto
+                ->afterStateUpdated(function (callable $set, $state) {
+                    $producto = \App\Models\Producto::find($state);
+                    if ($producto) {
+                        $set('stock_disponible', $producto->stock);
+                    }
+                }),
             Forms\Components\TextInput::make('cantidad')
                 ->required()
-                ->numeric(),
+                ->numeric()
+                ->rule(function ($get) {
+                    return 'max:' . $get('stock_disponible');  // Limitar la cantidad al stock disponible
+                }),
+            Forms\Components\TextInput::make('stock_disponible')
+                ->disabled()
+                ->numeric()
+                ->label('Stock disponible'),
             Forms\Components\TextInput::make('precio_venta')
                 ->required()
                 ->numeric(),
-                //
-            ]);
-    }
+        ]);
+}
 
     public static function table(Table $table): Table
     {
@@ -51,14 +70,18 @@ class VentaResource extends Resource
             TextColumn::make('precio_venta')->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(), // Filtro para ventas eliminadas
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\RestoreAction::make(),  // Acción para restaurar registros eliminados
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\RestoreBulkAction::make(), // Restaurar en masa
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(), // Eliminar permanentemente
                 ]),
             ]);
     }

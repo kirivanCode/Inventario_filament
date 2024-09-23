@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('stock')->default(0);
             $table->decimal('precio', 8, 2); // Precio del producto
             $table->timestamps();
+            $table->softDeletes();
         
         });
     }

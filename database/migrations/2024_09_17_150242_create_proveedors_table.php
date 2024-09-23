@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('telefono');
             $table->string('nombre'); // Puedes agregar más columnas aquí
             $table->timestamps();
+            $table->softDeletes();
        
         });
     }

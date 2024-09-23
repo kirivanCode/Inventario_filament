@@ -17,7 +17,10 @@ return new class extends Migration
             $table->foreignId('cliente_id')->constrained('cliente')->onDelete('cascade');
             $table->integer('cantidad');
             $table->decimal('precio_venta', 8, 2); // Precio de venta
+            $table->softDeletes();
             $table->timestamps();
+          
+            
         });
     }
 

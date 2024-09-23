@@ -19,6 +19,8 @@ class ProductoResource extends Resource
     protected static ?string $model = Producto::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    
+    protected static ?string $navigationGroup = 'tablas ';
 
     public static function form(Form $form): Form
     {
@@ -56,7 +58,21 @@ class ProductoResource extends Resource
                 ->date('d/m/Y')
                 ->label('Fecha de Creación'),
         ])
-        ->filters([]);
+        ->filters([
+            Tables\Filters\TrashedFilter::make(), // Filtro para ventas eliminadas
+        ])
+        ->actions([
+            Tables\Actions\EditAction::make(),
+            Tables\Actions\RestoreAction::make(),  // Acción para restaurar registros eliminados
+            Tables\Actions\DeleteAction::make(),
+        ])
+        ->bulkActions([
+            Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\RestoreBulkAction::make(), // Restaurar en masa
+                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\ForceDeleteBulkAction::make(), // Eliminar permanentemente
+            ]),
+        ]);
     }
 
     public static function getRelations(): array
