@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\BadgeColumn;
 
 
 class VentaResource extends Resource
@@ -68,6 +69,9 @@ class VentaResource extends Resource
             TextColumn::make('producto.nombre')->label('Producto')->sortable()->searchable(),
             TextColumn::make('cantidad')->sortable(),
             TextColumn::make('precio_venta')->sortable(),
+            BadgeColumn::make('created_at')
+            ->date('d/m/Y')
+            ->label('Fecha de Creación'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(), // Filtro para ventas eliminadas
