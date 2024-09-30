@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Inventario\Resources;
 
-use App\Filament\Resources\ProductoResource\Pages;
-use App\Filament\Resources\ProductoResource\RelationManagers;
+use App\Filament\Inventario\Resources\ProductoResource\Pages;
+use App\Filament\Inventario\Resources\ProductoResource\RelationManagers;
 use App\Models\Producto;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -14,25 +14,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
+
 class ProductoResource extends Resource
 {
     protected static ?string $model = Producto::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    
-    protected static ?string $navigationGroup = 'tablas ';
-
-    public static function getPermissionPrefixes(): array
-    {
-        return [
-            'view',
-            'view_any',
-            'create',
-            'update',
-            'delete',
-            'delete_any',
-        ];
-    }
 
     public static function form(Form $form): Form
     {
