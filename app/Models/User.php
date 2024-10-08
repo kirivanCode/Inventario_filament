@@ -46,8 +46,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function canAccessPanel(Panel $panel): bool // Corrige aquí
+    public function canAccessPanel(Panel $panel): bool
     {
-        return true; // Lógica para determinar si el usuario puede acceder al panel
+        return true;  // Asegúrate de devolver true para habilitar el acceso
     }
+    
 }
