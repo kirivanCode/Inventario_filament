@@ -33,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         Proveedor::class => ProveedorPolicy::class,
         User::class => UserPolicy::class,
         Venta::class => VentaPolicy::class,
+        Role::class =>RolePolicy::class,
     ];
 
     /**
