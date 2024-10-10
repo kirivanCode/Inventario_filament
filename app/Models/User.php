@@ -48,8 +48,7 @@ class User extends Authenticatable
 
     public function canAccessPanel(Panel $panel): bool
     {
-        // Verifica si el usuario tiene el rol necesario
-        return auth()->user()->hasRole('admin'); // Asegúrate de tener el método hasRole en tu modelo User
+        return true;  // Asegúrate de devolver true para habilitar el acceso
     }
     
 }
