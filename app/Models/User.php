@@ -46,6 +46,10 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // Verifica si el usuario tiene el rol necesario
+        return auth()->user()->hasRole('admin'); // Asegúrate de tener el método hasRole en tu modelo User
+    }
     
 }
